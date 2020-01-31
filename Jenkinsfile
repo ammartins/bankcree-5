@@ -35,6 +35,6 @@ pipeline {
   }
   environment {
     registry = 'ammartins/bankcree-5'
-    registryCredential = '2bdcc511-3657-4539-ad74-afa45c340c0a'
+    registryCredential = 'docker-hub'
   }
 }
