@@ -1,17 +1,40 @@
 pipeline {
   agent any
   stages {
-    stage('Composer Install') {
+    stage('Build Docker Image - Master') {
+      when {
+        branch 'master'
+      }
       steps {
-        sh 'composer install'
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
       }
     }
-
-    stage('App Install Assets') {
+    stage('Build Docker Image - Release Candidate') {
+      when {
+        not {
+          branch 'master'
+        }
+      }
       steps {
-        sh 'php bin/console assets:install public --symlink --env=prod'
+        script {
+          dockerImage = docker.build registry + ":rc-$BUILD_NUMBER"
+        }
       }
     }
-
+    stage('Push Docker Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
+        }
+      }
+    }
+  }
+  environment {
+    registry = 'ammartins/bankcree-5'
+    registryCredential = 'docker-hub'
   }
 }
