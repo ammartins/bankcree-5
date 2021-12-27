@@ -16,3 +16,8 @@
 ###< symfony/phpunit-bridge ###
 
 .phplint-cache
+
+### Code Editor
+.idea/
+.env
+public/
