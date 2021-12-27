@@ -19,3 +19,5 @@
 
 ### Code Editor
 .idea/
+.env
+public/
